@@ -21,7 +21,12 @@ const ToggleText = ({ secret }: ToggleTextProps) => {
           </span>
         )}
       </div>
-      <Button variant="ghost" onClick={() => setVisible(!visible)}>
+      <Button
+        variant="ghost"
+        onClick={() => {
+          setVisible(!visible);
+        }}
+      >
         {visible ? <EyeOff className="size-6" /> : <Eye className="size-6" />}
       </Button>
     </div>

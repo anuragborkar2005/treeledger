@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import ToggleText from "./toggle-text";
+import { copyToClipboard } from "@/lib/utils";
 
 type AccountListProps = {
   accounts: Account[];
@@ -102,6 +103,7 @@ const AccountsList = ({ accounts, generateAccounts }: AccountListProps) => {
                     <Button
                       variant="outline"
                       className="text-black dark:text-white "
+                      onClick={() => copyToClipboard(publicKey)}
                     >
                       Copy
                     </Button>
@@ -114,6 +116,7 @@ const AccountsList = ({ accounts, generateAccounts }: AccountListProps) => {
                     <Button
                       variant="outline"
                       className="text-black dark:text-white "
+                      onClick={() => copyToClipboard(privateKey)}
                     >
                       Copy
                     </Button>

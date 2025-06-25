@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { generateMnemonic } from "bip39";
-import { toast } from "sonner";
+import { copyToClipboard } from "@/lib/utils";
 
 type MnemonicsDisplayProps = {
   mnemonicsWords: string[];
@@ -12,12 +12,6 @@ const MnemonicsDialog = ({
   mnemonicsWords,
   setMnemonicWords,
 }: MnemonicsDisplayProps) => {
-  const copyToClipboard = (words: string) => {
-    navigator.clipboard.writeText(words).then(() => {
-      toast("Mnemonics has been copied");
-    });
-  };
-
   const generateRandom = () => {
     const words = generateMnemonic(128);
     localStorage.setItem("mnemonics", JSON.stringify(words.split(" ")));
@@ -26,6 +20,7 @@ const MnemonicsDialog = ({
 
   return (
     <div>
+      {mnemonicsWords}
       {mnemonicsWords.length !== 0 ? (
         <div className="flex flex-col items-center p-4">
           <div className="container grid grid-cols-3 grid-rows-4 gap-4">

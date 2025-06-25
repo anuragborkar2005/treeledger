@@ -5,7 +5,7 @@ import { Separator } from "./ui/separator";
 
 const Navbar = () => {
   return (
-    <nav className="container flex flex-col h-16 py-4 gap-4">
+    <nav className="container sticky flex flex-col h-16 py-4 gap-4">
       <div className="max-w-5xl container flex items-center justify-between mx-auto">
         <div className="flex items-end gap-2">
           <WalletCardsIcon className="size-8" />
