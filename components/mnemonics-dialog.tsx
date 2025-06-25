@@ -20,7 +20,6 @@ const MnemonicsDialog = ({
 
   return (
     <div>
-      {mnemonicsWords}
       {mnemonicsWords.length !== 0 ? (
         <div className="flex flex-col items-center p-4">
           <div className="container grid grid-cols-3 grid-rows-4 gap-4">
