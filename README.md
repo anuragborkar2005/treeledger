@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tree Ledger: Hierarchical Deterministic (HD) Multi-Chain Wallet
 
-## Getting Started
+Tree Ledger is a Hierarchical Deterministic (HD) wallet project designed for Solana, Ethereum, and Bitcoin. Built using Next.js, React, Tailwind CSS, and cryptographic standards, this application enables users to manage their digital assets, derive accounts from a single mnemonic seed phrase, query real-time balances, request faucets, and execute secure on-chain transfers.
 
-First, run the development server:
+---
 
+## 🌟 Key Features
+
+### 🔑 Cryptographic Key Derivation
+* **BIP39 Mnemonic Seed Phrase**: Generate secure 12-word seed phrases or import existing ones to initialize the master seed.
+* **Multi-Chain Support**: Derives addresses for multiple blockchains from a single root seed using standard derivation paths:
+  * **Solana (SOL)**: `m/44'/501'/0'/i'` (using Ed25519 curve)
+  * **Ethereum (ETH)**: `m/44'/60'/0'/0/i` (using secp256k1 curve)
+  * **Bitcoin (BTC)**: `m/44'/0'/0'/0/i` (using secp256k1 curve and encoding to legacy Mainnet addresses)
+
+### ⛓️ Solana On-Chain Integration
+* **Multi-Cluster Support**: Easily switch between Solana **Devnet**, **Testnet**, and **Mainnet Beta**.
+* **Real-Time Balances**: Automatically query and display current balances for all derived Solana addresses.
+* **Devnet/Testnet Faucet (Airdrop)**: Request faucet tokens (1.0 SOL) directly within the dashboard (with failover guidance to web faucets).
+* **Secure Transfer**: Send SOL transactions on-chain by entering a destination address and amount, utilizing client-side keypairs for signing transactions securely.
+* **Transaction Signature History**: Inspect the 5 most recent transaction signatures for any derived Solana address.
+
+---
+
+## 🛠️ Tech Stack & Dependencies
+
+* **Framework**: [Next.js](https://nextjs.org/) (App Router) & [React](https://react.dev/)
+* **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [Radix UI primitives](https://www.radix-ui.com/)
+* **Solana Interface**: [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/)
+* **Cryptography & Encoding**:
+  * `bip39` (Mnemonic phrase generation and validation)
+  * `ed25519-hd-key` (Ed25519 derivation path helper)
+  * `tweetnacl` (Signature library for Solana keys)
+  * `ethers` (secp256k1 public key derivation for Bitcoin/Ethereum)
+  * `bs58` (Base58 encoding/decoding)
+* **Icons & UI Feedback**: `lucide-react`, `@web3icons/react`, and `sonner` toasts
+
+---
+
+## 🚀 Getting Started
+
+### 📋 Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) (v20+ recommended) and `npm` installed.
+
+### ⚙️ Installation
+
+1. Clone the repository and navigate to the project root directory:
+   ```bash
+   cd treeledger
+   ```
+
+2. Install the package dependencies:
+   ```bash
+   npm install
+   ```
+
+### 💻 Running the Development Server
+Start the local server to run the application in development mode:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+### 📦 Building for Production
+To compile and build an optimized production version of the application:
+```bash
+npm run build
+```
+To run the production build locally:
+```bash
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔍 How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Root Mnemonic Setup**: The user generates a new 12-word seed phrase or imports an existing valid BIP39 phrase. The mnemonic is stored securely in the browser's local storage for session persistence.
+2. **Deterministic Derivation**:
+   * For **Solana**, the seed is passed to `derivePath` with the Solana path (`m/44'/501'/0'/i'`). A 32-byte seed is derived, from which `tweetnacl` generates the key pair.
+   * For **Ethereum/Bitcoin**, standard `ethers.HDNodeWallet` path derivation is applied.
+3. **Solana RPC Calls**:
+   * Connection handles RPC communication with public Solana cluster endpoints.
+   * On-chain transactions are signed using the private key (`Keypair.fromSecretKey`) client-side before sending the raw transaction to the RPC node.
